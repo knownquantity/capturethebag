@@ -107,9 +107,17 @@ export default function CaptureButton({
       </button>
       {isCaptureError && (
         <div className="capture-error">
-          {(captureError?.shortMessage || captureError?.message || 'TX FAILED').includes('exceeds the balance')
-            ? 'INSUFFICIENT FUNDS'
-            : captureError?.shortMessage || captureError?.message || 'TX FAILED'}
+          {(() => {
+            const msg = captureError?.shortMessage || captureError?.message || 'TX FAILED';
+            if (msg.includes('exceeds the balance')) return 'INSUFFICIENT FUNDS';
+            if (msg.includes('Insufficient payment')) {
+              const prevPrice = capturePrice ? (capturePrice * 100n) / 115n : null;
+              return prevPrice
+                ? `SOMEONE CAPTURED FIRST AT ${formatEth(prevPrice)} ETH — TRY AGAIN AT ${formatEth(capturePrice)} ETH`
+                : 'SOMEONE CAPTURED FIRST — TRY AGAIN';
+            }
+            return msg;
+          })()}
         </div>
       )}
     </div>
