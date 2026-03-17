@@ -73,22 +73,13 @@ function App() {
         <button className="nav-btn nav-btn-green" onClick={() => setActiveModal('rules')}>RULES</button>
         <button className="nav-btn nav-btn-green" onClick={() => setActiveModal('fairness')}>FAIRNESS</button>
         <button className="nav-btn nav-btn-green" onClick={() => setActiveModal('referrals')}>REFERRALS</button>
-        <ConnectButton.Custom>
-          {({ account, chain, openConnectModal, openAccountModal }) => {
-            if (!account) {
-              return (
-                <button className="nav-btn nav-btn-wallet" onClick={openConnectModal}>
-                  CONNECT
-                </button>
-              );
-            }
-            return (
-              <button className="nav-btn nav-btn-wallet" onClick={openAccountModal}>
-                {account.displayName}
-              </button>
-            );
-          }}
-        </ConnectButton.Custom>
+        <div className="nav-btn-wrap">
+          <ConnectButton
+            chainStatus="none"
+            showBalance={false}
+            accountStatus="address"
+          />
+        </div>
       </div>
 
       <div className="game-area">
