@@ -1,0 +1,15 @@
+# Environment variables
+.env
+
+# Foundry (contracts/)
+contracts/out/
+contracts/cache/
+contracts/lib/
+contracts/broadcast/
+
+# Frontend (frontend/)
+frontend/node_modules/
+frontend/dist/
+
+# OS files
+.DS_Store
