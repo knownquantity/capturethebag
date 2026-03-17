@@ -5,7 +5,7 @@ An onchain game on Base. One bag. One holder. Pay ETH to capture it.
 Hold it for 24 hours with no other captures to win 95% of the pot.
 
 ## Contract
-- Address: 0xd1D37Ed6E6bc66C2ceBcBa037D7aE08423B463E
+- Address: 0xd1D37Ed6E6bc66C2ceBcB0a037D7aE08423B463E
 - Network: Base Sepolia (chainId: 84532)
 - RPC: https://sepolia.base.org
 - ABI: GET https://capturethebag.wtf/api/abi
