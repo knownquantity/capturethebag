@@ -236,15 +236,27 @@ contract CaptureTheBagTest is Test {
         game.claimWinnings();
     }
 
-    function test_cannotCaptureExpiredRound() public {
+    function test_autoResolveExpiredRound() public {
         _capture(alice, address(0));
+
+        uint256 potBefore = game.pot();
+        uint256 aliceBefore = alice.balance;
 
         vm.warp(block.timestamp + 24 hours);
 
-        uint256 price = game.currentCapturePrice();
+        // Bob captures on expired round — auto-resolves, pays alice, starts new round
+        uint256 startPrice = game.START_PRICE();
         vm.prank(bob);
-        vm.expectRevert("Round expired - call claimWinnings()");
-        game.capture{value: price}(address(0));
+        game.capture{value: startPrice}(address(0));
+
+        // Alice received 95% of the old pot
+        uint256 expectedPayout = (potBefore * 95) / 100;
+        assertEq(alice.balance, aliceBefore + expectedPayout);
+
+        // New round started, bob is holder
+        assertEq(game.roundNumber(), 2);
+        assertEq(game.currentHolder(), bob);
+        assertTrue(game.roundActive());
     }
 
     // ──────────────────── Round Lifecycle ──────────────

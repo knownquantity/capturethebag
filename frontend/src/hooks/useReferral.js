@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { baseSepolia } from 'wagmi/chains';
 import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI } from '../contract';
 
-const DEPLOY_BLOCK = 38986880n;
+const DEPLOY_BLOCK = 38993935n;
 const BATCH_SIZE = 10000n;
 
 export function useReferral() {

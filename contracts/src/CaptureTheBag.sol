@@ -66,7 +66,13 @@ contract CaptureTheBag is ReentrancyGuard, Ownable {
 
     // ──────────────────── Core Functions ───────────────
     function capture(address referrer) external payable nonReentrant {
-        // If round is not active, start a new round
+        // Auto-resolve expired round if needed
+        if (roundActive && currentHolder != address(0) &&
+            block.timestamp >= lastCaptureTime + INACTIVITY_WINDOW) {
+            _resolveRound();
+        }
+
+        // Start new round if not active
         if (!roundActive) {
             _startNewRound();
         }
@@ -78,7 +84,7 @@ contract CaptureTheBag is ReentrancyGuard, Ownable {
         if (currentHolder != address(0)) {
             require(
                 block.timestamp < lastCaptureTime + INACTIVITY_WINDOW,
-                "Round expired - call claimWinnings()"
+                "Round expired"
             );
         }
 
@@ -154,33 +160,7 @@ contract CaptureTheBag is ReentrancyGuard, Ownable {
             "Inactivity window not expired"
         );
 
-        uint256 finalPot = pot;
-        uint256 winnerPayout = (finalPot * WINNER_PCT) / 100;
-        uint256 rolloverAmount = finalPot - winnerPayout;
-
-        address winner = currentHolder;
-
-        // Reset round state
-        rollover = rolloverAmount;
-        pot = 0;
-        currentHolder = address(0);
-        currentCapturePrice = START_PRICE;
-        roundActive = false;
-
-        uint256 totalCaptures = captureCount;
-        captureCount = 0;
-
-        // Pay winner
-        _safeTransferETH(winner, winnerPayout);
-
-        emit RoundWon(
-            roundNumber,
-            winner,
-            winnerPayout,
-            rolloverAmount,
-            totalCaptures,
-            finalPot
-        );
+        _resolveRound();
     }
 
     function getGameState() external view returns (
@@ -212,6 +192,34 @@ contract CaptureTheBag is ReentrancyGuard, Ownable {
     }
 
     // ──────────────────── Internal ─────────────────────
+    function _resolveRound() internal {
+        uint256 finalPot = pot;
+        uint256 winnerPayout = (finalPot * WINNER_PCT) / 100;
+        uint256 rolloverAmount = finalPot - winnerPayout;
+
+        address winner = currentHolder;
+
+        rollover = rolloverAmount;
+        pot = 0;
+        currentHolder = address(0);
+        currentCapturePrice = START_PRICE;
+        roundActive = false;
+
+        uint256 totalCaptures = captureCount;
+        captureCount = 0;
+
+        _safeTransferETH(winner, winnerPayout);
+
+        emit RoundWon(
+            roundNumber,
+            winner,
+            winnerPayout,
+            rolloverAmount,
+            totalCaptures,
+            finalPot
+        );
+    }
+
     function _startNewRound() internal {
         roundNumber += 1;
         roundActive = true;
