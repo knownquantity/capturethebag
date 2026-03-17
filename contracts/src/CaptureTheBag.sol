@@ -28,6 +28,7 @@ contract CaptureTheBag is ReentrancyGuard, Ownable {
     address public protocolWallet;
 
     mapping(address => address) public referredBy;
+    mapping(address => uint256) public pendingWithdrawals;
 
     // ──────────────────── Events ───────────────────────
     event BagCaptured(
@@ -152,6 +153,13 @@ contract CaptureTheBag is ReentrancyGuard, Ownable {
         );
     }
 
+    function withdraw() external nonReentrant {
+        uint256 amount = pendingWithdrawals[msg.sender];
+        require(amount > 0, "Nothing to withdraw");
+        pendingWithdrawals[msg.sender] = 0;
+        _safeTransferETH(msg.sender, amount);
+    }
+
     function claimWinnings() external nonReentrant {
         require(roundActive, "No active round");
         require(currentHolder != address(0), "No holder");
@@ -208,7 +216,11 @@ contract CaptureTheBag is ReentrancyGuard, Ownable {
         uint256 totalCaptures = captureCount;
         captureCount = 0;
 
-        _safeTransferETH(winner, winnerPayout);
+        // Try to push ETH to winner; fall back to pull if recipient reverts
+        (bool success, ) = winner.call{value: winnerPayout}("");
+        if (!success) {
+            pendingWithdrawals[winner] += winnerPayout;
+        }
 
         emit RoundWon(
             roundNumber,

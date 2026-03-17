@@ -17,6 +17,10 @@ export default function CaptureButton({
   claimWinnings,
   isClaimPending,
   isClaimConfirming,
+  pendingAmount,
+  withdraw,
+  isWithdrawPending,
+  isWithdrawConfirming,
 }) {
   const { address, isConnected } = useAccount();
 
@@ -36,6 +40,23 @@ export default function CaptureButton({
 
   const priceStr = formatEth(capturePrice);
 
+  const hasPending = pendingAmount && pendingAmount > 0n;
+
+  const withdrawButton = hasPending ? (
+    <button
+      className="capture-btn capture-btn-claim"
+      onClick={() => withdraw()}
+      disabled={isWithdrawPending || isWithdrawConfirming}
+      style={{ marginBottom: '8px' }}
+    >
+      {isWithdrawPending
+        ? 'CONFIRM IN WALLET...'
+        : isWithdrawConfirming
+          ? 'CONFIRMING...'
+          : `WITHDRAW ${formatEth(pendingAmount)} ETH`}
+    </button>
+  ) : null;
+
   const isWinner =
     canClaim &&
     address &&
@@ -46,6 +67,7 @@ export default function CaptureButton({
     if (isWinner) {
       return (
         <div className="capture-button-wrap">
+          {withdrawButton}
           <button
             className="capture-btn capture-btn-claim"
             onClick={() => claimWinnings()}
@@ -64,6 +86,7 @@ export default function CaptureButton({
     const newRoundPriceStr = formatEth(newRoundPrice);
     return (
       <div className="capture-button-wrap">
+        {withdrawButton}
         <button
           className="capture-btn"
           onClick={() => {
@@ -89,6 +112,7 @@ export default function CaptureButton({
 
   return (
     <div className="capture-button-wrap">
+      {withdrawButton}
       <button
         className="capture-btn"
         onClick={() => {

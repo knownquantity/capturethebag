@@ -3,7 +3,7 @@
 > An onchain game on Base. Pay ETH to capture the bag. Hold it for 24 hours with no captures to win the pot.
 
 ## Game
-- Contract: 0x4f51D5a27519318a098761AB7AB7980F6B38aC73
+- Contract: 0xd1D37Ed6E6bc66C2ceBcBa037D7aE08423B463E
 - Network: Base Sepolia (chainId: 84532)
 - Start price: 0.01 ETH, escalates 1.15x per capture
 - Win condition: hold the bag for 24 hours uncontested
@@ -19,4 +19,4 @@
 ## Files
 - Full instructions: /skills.md
 - ABI: /api/abi
-- Contract source: https://sepolia.basescan.org/address/0x4f51D5a27519318a098761AB7AB7980F6B38aC73
+- Contract source: https://sepolia.basescan.org/address/0xd1D37Ed6E6bc66C2ceBcBa037D7aE08423B463E

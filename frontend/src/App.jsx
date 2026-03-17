@@ -6,6 +6,7 @@ import { useGameState } from './hooks/useGameState';
 import { useCapture } from './hooks/useCapture';
 import { useClaimWinnings } from './hooks/useClaimWinnings';
 import { useReferral } from './hooks/useReferral';
+import { useWithdraw } from './hooks/useWithdraw';
 import AgentBanner from './components/AgentBanner';
 import BagLogo from './components/BagLogo';
 import StatBar from './components/StatBar';
@@ -42,6 +43,13 @@ function App() {
     isSuccess: claimSuccess,
   } = useClaimWinnings();
   const { earnings: referralEarnings } = useReferral();
+  const {
+    pendingAmount,
+    withdraw,
+    isPending: isWithdrawPending,
+    isConfirming: isWithdrawConfirming,
+    isSuccess: withdrawSuccess,
+  } = useWithdraw(address);
 
   useEffect(() => {
     if (captureSuccess) playCaptureSound();
@@ -128,6 +136,10 @@ function App() {
               claimWinnings={claimWinnings}
               isClaimPending={isClaimPending}
               isClaimConfirming={isClaimConfirming}
+              pendingAmount={pendingAmount}
+              withdraw={withdraw}
+              isWithdrawPending={isWithdrawPending}
+              isWithdrawConfirming={isWithdrawConfirming}
             />
           </>
         )}

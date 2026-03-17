@@ -18,6 +18,20 @@ const ABI = [
     outputs: [],
   },
   {
+    name: 'withdraw',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [],
+    outputs: [],
+  },
+  {
+    name: 'pendingWithdrawals',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: '', type: 'address' }],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
     name: 'getGameState',
     type: 'function',
     stateMutability: 'view',

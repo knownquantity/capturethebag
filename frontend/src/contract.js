@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS_SEPOLIA = import.meta.env.VITE_CONTRACT_ADDRESS_SEPOLIA || '0x4f51D5a27519318a098761AB7AB7980F6B38aC73';
+export const CONTRACT_ADDRESS_SEPOLIA = import.meta.env.VITE_CONTRACT_ADDRESS_SEPOLIA || '0xd1D37Ed6E6bc66C2ceBcBa037D7aE08423B463E';
 export const CONTRACT_ADDRESS_MAINNET = import.meta.env.VITE_CONTRACT_ADDRESS_MAINNET || '';
 
 const chainId = Number(import.meta.env.VITE_CHAIN_ID || 84532);
@@ -23,6 +23,20 @@ export const CAPTURE_THE_BAG_ABI = [
     stateMutability: 'nonpayable',
     inputs: [],
     outputs: [],
+  },
+  {
+    name: 'withdraw',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [],
+    outputs: [],
+  },
+  {
+    name: 'pendingWithdrawals',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: '', type: 'address' }],
+    outputs: [{ name: '', type: 'uint256' }],
   },
   {
     name: 'getGameState',

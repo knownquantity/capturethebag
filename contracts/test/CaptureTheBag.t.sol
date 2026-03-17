@@ -469,4 +469,132 @@ contract CaptureTheBagTest is Test {
         vm.expectRevert();
         game.setProtocolWallet(newWallet);
     }
+
+    // ──────────────────── Pull Pattern / DoS Protection ──────
+    function test_revertingWinnerDoesNotBrickGame() public {
+        // Deploy a contract that reverts on ETH receive
+        RevertOnReceive attacker = new RevertOnReceive(address(game));
+        vm.deal(address(attacker), 100 ether);
+
+        // Attacker captures the bag
+        attacker.doCapture();
+
+        uint256 potBefore = game.pot();
+        vm.warp(block.timestamp + 24 hours);
+
+        // claimWinnings should succeed even though winner reverts on receive
+        game.claimWinnings();
+
+        // Game moved forward — round resolved
+        assertFalse(game.roundActive());
+
+        // Winnings stored in pendingWithdrawals
+        uint256 expectedPayout = (potBefore * 95) / 100;
+        assertEq(game.pendingWithdrawals(address(attacker)), expectedPayout);
+    }
+
+    function test_revertingWinnerAutoResolveDoesNotBrickGame() public {
+        // Deploy a contract that reverts on ETH receive
+        RevertOnReceive attacker = new RevertOnReceive(address(game));
+        vm.deal(address(attacker), 100 ether);
+
+        // Attacker captures the bag
+        attacker.doCapture();
+
+        uint256 potBefore = game.pot();
+        uint256 aliceBefore = alice.balance;
+
+        vm.warp(block.timestamp + 24 hours);
+
+        // Alice captures — auto-resolves the expired round, starts new round
+        vm.prank(alice);
+        game.capture{value: 0.01 ether}(address(0));
+
+        // Game moved forward
+        assertEq(game.roundNumber(), 2);
+        assertEq(game.currentHolder(), alice);
+
+        // Attacker's winnings stored in pendingWithdrawals
+        uint256 expectedPayout = (potBefore * 95) / 100;
+        assertEq(game.pendingWithdrawals(address(attacker)), expectedPayout);
+    }
+
+    function test_withdrawPendingWinnings() public {
+        _capture(alice, address(0));
+        vm.warp(block.timestamp + 24 hours);
+
+        uint256 potBefore = game.pot();
+
+        // Manually set alice as a "failed transfer" scenario by using the RevertOnReceive pattern
+        // Instead, let's test withdraw directly by using a reverting contract
+        RevertOnReceive attacker = new RevertOnReceive(address(game));
+        vm.deal(address(attacker), 100 ether);
+
+        // Start fresh: attacker captures, round expires, claim stores in pending
+        _capture(bob, address(0)); // clear alice's round first - bob captures
+        attacker.doCapture();
+
+        uint256 pot2 = game.pot();
+        vm.warp(block.timestamp + 24 hours);
+        game.claimWinnings();
+
+        uint256 pending = game.pendingWithdrawals(address(attacker));
+        assertTrue(pending > 0);
+
+        // Attacker enables receiving and withdraws
+        attacker.setAcceptETH(true);
+        uint256 attackerBefore = address(attacker).balance;
+        attacker.doWithdraw();
+
+        assertEq(address(attacker).balance - attackerBefore, pending);
+        assertEq(game.pendingWithdrawals(address(attacker)), 0);
+    }
+
+    function test_withdrawNothingReverts() public {
+        vm.prank(alice);
+        vm.expectRevert("Nothing to withdraw");
+        game.withdraw();
+    }
+
+    function test_eoaWinnerStillGetsPaidDirectly() public {
+        // Normal EOA winner should still receive ETH directly (no pending)
+        _capture(alice, address(0));
+        vm.warp(block.timestamp + 24 hours);
+
+        uint256 aliceBefore = alice.balance;
+        uint256 potBefore = game.pot();
+
+        game.claimWinnings();
+
+        uint256 expectedPayout = (potBefore * 95) / 100;
+        assertEq(alice.balance - aliceBefore, expectedPayout);
+        assertEq(game.pendingWithdrawals(alice), 0); // nothing in pending
+    }
+}
+
+// Helper contract that reverts on ETH receive
+contract RevertOnReceive {
+    CaptureTheBag public game;
+    bool public acceptETH;
+
+    constructor(address _game) {
+        game = CaptureTheBag(_game);
+    }
+
+    function setAcceptETH(bool _accept) external {
+        acceptETH = _accept;
+    }
+
+    function doCapture() external {
+        uint256 price = game.roundActive() ? game.currentCapturePrice() : 0.01 ether;
+        game.capture{value: price}(address(0));
+    }
+
+    function doWithdraw() external {
+        game.withdraw();
+    }
+
+    receive() external payable {
+        require(acceptETH, "No ETH accepted");
+    }
 }

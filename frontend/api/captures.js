@@ -1,8 +1,8 @@
 import { createPublicClient, http } from 'viem';
 import { baseSepolia } from 'viem/chains';
 
-const CONTRACT_ADDRESS = '0x4f51D5a27519318a098761AB7AB7980F6B38aC73';
-const DEPLOY_BLOCK = 38993935n;
+const CONTRACT_ADDRESS = '0xd1D37Ed6E6bc66C2ceBcBa037D7aE08423B463E';
+const DEPLOY_BLOCK = 39001285n;
 const BATCH_SIZE = 10000n;
 
 const ABI = [
