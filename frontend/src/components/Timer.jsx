@@ -15,7 +15,7 @@ export default function Timer({ windowExpiresAt, canClaim, lastCaptureTime, hold
   if (!lastCaptureTime || lastCaptureTime === 0n) {
     return (
       <div className="timer">
-        <div className="timer-value">CAPTURE TO START A NEW ROUND</div>
+        <div className="timer-value timer-expired">00:00:00</div>
       </div>
     );
   }
@@ -48,7 +48,7 @@ export default function Timer({ windowExpiresAt, canClaim, lastCaptureTime, hold
   if (remaining === 0) {
     return (
       <div className="timer">
-        <div className="timer-value">CAPTURE TO START A NEW ROUND</div>
+        <div className="timer-value timer-expired">00:00:00</div>
       </div>
     );
   }

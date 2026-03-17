@@ -105,7 +105,7 @@ export default function CaptureButton({
               ? 'CONFIRMING...'
               : 'CAPTURE THE BAG'}
       </button>
-      {isCaptureError && (
+      {isCaptureError ? (
         <div className="capture-error">
           {(() => {
             const msg = captureError?.shortMessage || captureError?.message || 'TX FAILED';
@@ -119,7 +119,9 @@ export default function CaptureButton({
             return msg;
           })()}
         </div>
-      )}
+      ) : !holder && !canClaim ? (
+        <div className="capture-error">CAPTURE TO START A ROUND</div>
+      ) : null}
     </div>
   );
 }
