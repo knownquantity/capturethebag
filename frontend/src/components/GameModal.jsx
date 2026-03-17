@@ -170,7 +170,7 @@ export default function GameModal({ modalId, onClose, walletAddress, referralEar
 
   return (
     <div className="modal-overlay" onClick={handleClose}>
-      <div className="modal-body" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-body">
         {shownLines.map((line, i) => {
           if (line === '__REFERRAL_EARNINGS__') {
             if (!walletAddress) return null;
