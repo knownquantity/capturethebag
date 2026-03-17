@@ -8,6 +8,7 @@ export default function CaptureButton({
   holder,
   canClaim,
   capture,
+  referrer,
   isCapturePending,
   isCaptureConfirming,
   isCaptureError,
@@ -67,7 +68,7 @@ export default function CaptureButton({
           className="capture-btn"
           onClick={() => {
             if (isCaptureError) resetCapture?.();
-            capture(null, newRoundPrice);
+            capture(referrer, newRoundPrice);
           }}
           disabled={isCapturePending || isCaptureConfirming || !newRoundPrice}
         >
@@ -92,7 +93,7 @@ export default function CaptureButton({
         className="capture-btn"
         onClick={() => {
           if (isCaptureError) resetCapture?.();
-          capture(null, capturePrice);
+          capture(referrer, capturePrice);
         }}
         disabled={isHolder || isCapturePending || isCaptureConfirming || !capturePrice}
       >

@@ -14,8 +14,15 @@ import CaptureButton from './components/CaptureButton';
 import TaglineMarquee from './components/TaglineMarquee';
 import GameModal from './components/GameModal';
 
+function getReferrerFromUrl() {
+  const path = window.location.pathname.replace(/^\//, '');
+  if (/^0x[a-fA-F0-9]{40}$/.test(path)) return path;
+  return null;
+}
+
 function App() {
   const [activeModal, setActiveModal] = useState(null);
+  const [referrer] = useState(() => getReferrerFromUrl());
   const { address } = useAccount();
   const gameState = useGameState();
   const {
@@ -111,6 +118,7 @@ function App() {
               holder={gameState.holder}
               canClaim={gameState.canClaim}
               capture={capture}
+              referrer={referrer}
               isCapturePending={isCapturePending}
               isCaptureConfirming={isCaptureConfirming}
               isCaptureError={isCaptureError}
