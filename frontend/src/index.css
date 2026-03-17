@@ -676,11 +676,11 @@ html, body {
     display: none;
   }
 
-  /* Stats — 2x3 grid: CAPTURE PRICE + BAG on top, ROUND + HOLDER + CAPTURES on bottom */
+  /* Stats — 2 rows: CAPTURE PRICE + BAG on top, ROUND + HOLDER + CAPTURES on bottom */
   .stat-bar {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 16px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px 8px;
     width: 100%;
     max-width: 640px;
   }
@@ -691,19 +691,25 @@ html, body {
   }
   .stat:nth-child(2) { /* CAPTURE PRICE */
     grid-row: 1;
-    grid-column: 1;
+    grid-column: 1 / 2;
   }
   .stat:nth-child(3) { /* BAG */
     grid-row: 1;
-    grid-column: 2;
+    grid-column: 2 / 4;
   }
   .stat:nth-child(4) { /* HOLDER */
     grid-row: 2;
     grid-column: 2;
+    overflow: hidden;
+  }
+  .stat:nth-child(4) .stat-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .stat:nth-child(5) { /* CAPTURES */
-    grid-row: 3;
-    grid-column: 1 / -1;
+    grid-row: 2;
+    grid-column: 3;
   }
 
   .stat-value {
