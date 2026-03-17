@@ -496,28 +496,6 @@ html, body {
   background: #2a7de0;
 }
 
-.nav-btn-wrap {
-  flex: 1;
-  display: flex;
-  min-width: 0;
-}
-
-.nav-btn-wrap [data-testid="rk-connect-button"],
-.nav-btn-wrap [data-testid="rk-account-button"],
-.nav-btn-wrap button {
-  font-family: var(--font) !important;
-  font-size: 8px !important;
-  text-transform: uppercase !important;
-  padding: 8px 12px !important;
-  border-radius: 0 !important;
-  width: 100% !important;
-  cursor: pointer !important;
-  letter-spacing: 1px !important;
-}
-
-.nav-btn-wrap > div {
-  width: 100%;
-}
 
 /* ═══════════════════════════════════════════
    MODAL — CRT STYLE

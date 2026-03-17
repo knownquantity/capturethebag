@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 import { playCaptureSound, playWinSound, playLoseSound, playClaimSound } from './utils/sound';
 import { useGameState } from './hooks/useGameState';
 import { useCapture } from './hooks/useCapture';
@@ -24,6 +24,7 @@ function App() {
   const [activeModal, setActiveModal] = useState(null);
   const [referrer] = useState(() => getReferrerFromUrl());
   const { address } = useAccount();
+  const { disconnect } = useDisconnect();
   const gameState = useGameState();
   const {
     capture,
@@ -73,13 +74,22 @@ function App() {
         <button className="nav-btn nav-btn-green" onClick={() => setActiveModal('rules')}>RULES</button>
         <button className="nav-btn nav-btn-green" onClick={() => setActiveModal('fairness')}>FAIRNESS</button>
         <button className="nav-btn nav-btn-green" onClick={() => setActiveModal('referrals')}>REFERRALS</button>
-        <div className="nav-btn-wrap">
-          <ConnectButton
-            chainStatus="none"
-            showBalance={false}
-            accountStatus="address"
-          />
-        </div>
+        <ConnectButton.Custom>
+          {({ account, chain, openConnectModal }) => {
+            if (!account) {
+              return (
+                <button className="nav-btn nav-btn-wallet" onClick={openConnectModal}>
+                  CONNECT
+                </button>
+              );
+            }
+            return (
+              <button className="nav-btn nav-btn-wallet" onClick={() => disconnect()}>
+                {account.displayName}
+              </button>
+            );
+          }}
+        </ConnectButton.Custom>
       </div>
 
       <div className="game-area">
