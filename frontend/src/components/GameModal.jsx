@@ -174,7 +174,7 @@ export default function GameModal({ modalId, onClose, walletAddress, referralEar
           if (line === '__REFERRAL_EARNINGS__') {
             if (!walletAddress) return null;
             return (
-              <div key={i} className="modal-line">
+              <div key={i} className="modal-line modal-line-blue">
                 YOUR REFERRAL EARNINGS: {formatEth(referralEarnings, 6)} ETH
               </div>
             );
