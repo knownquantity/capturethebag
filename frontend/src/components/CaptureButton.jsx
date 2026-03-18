@@ -1,6 +1,7 @@
-import { useAccount } from 'wagmi';
-import { formatEth } from '../utils/format';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { formatEth } from '../utils/format';
+import { CHAIN_ID } from '../contract';
 
 export default function CaptureButton({
   capturePrice,
@@ -22,7 +23,10 @@ export default function CaptureButton({
   isWithdrawPending,
   isWithdrawConfirming,
 }) {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, chainId } = useAccount();
+  const { switchChain } = useSwitchChain();
+
+  const wrongChain = isConnected && chainId !== CHAIN_ID;
 
   if (!isConnected) {
     return (
@@ -34,6 +38,16 @@ export default function CaptureButton({
             </button>
           )}
         </ConnectButton.Custom>
+      </div>
+    );
+  }
+
+  if (wrongChain) {
+    return (
+      <div className="capture-button-wrap">
+        <button className="capture-btn" onClick={() => switchChain({ chainId: CHAIN_ID })}>
+          SWITCH TO BASE
+        </button>
       </div>
     );
   }

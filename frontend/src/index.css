@@ -577,7 +577,7 @@ html, body {
 
 .modal-referral-url {
   font-size: 8px;
-  color: var(--amber);
+  color: #3898FF;
   background: #111111;
   padding: 8px 10px;
   border: 1px solid var(--dark);
@@ -611,6 +611,9 @@ html, body {
 }
 .modal-contract-link:hover {
   color: #5aadff;
+}
+.modal-line-blue {
+  color: #3898FF;
 }
 
 .pixel-blink {

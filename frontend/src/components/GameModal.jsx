@@ -17,27 +17,26 @@ const MODAL_CONTENT = {
       'ONE BAG. ONE HOLDER. A GROWING POT OF ETH.',
       'PAY THE CAPTURE PRICE TO BECOME THE CURRENT HOLDER.',
       '',
-      'STARTING PRICE: 0.01 ETH',
-      'PRICE ESCALATION: 1.15X PER CAPTURE',
+      '~STARTING PRICE: 0.01 ETH',
+      '~PRICE ESCALATION: 1.15X PER CAPTURE',
       '',
-      'IF 24 HOURS PASS WITH NO CAPTURE, THE HOLDER WINS',
-      '95% OF THE POT. 5% IS ROLLED OVER TO THE NEXT ROUND.',
+      '~IF 24 HOURS PASS WITH NO CAPTURE, THE HOLDER WINS',
+      '~95% OF THE POT. 5% IS ROLLED OVER TO THE NEXT ROUND.',
       '',
       'WINNERS CAN CLAIM MANUALLY BEFORE THE NEXT ROUND',
       'STARTS. IF SOMEONE STARTS A NEW ROUND FIRST, WINNINGS',
       'ARE SENT TO YOU AUTOMATICALLY.',
       '',
-      'JUST LIKE IN MODERN HUSTLE CULTURE, EARLY PARTICIPATION',
-      'IS REWARDED WITH NOTHING UNLESS YOU CAN AFFORD TO STAY',
-      'UNTIL THE END. ROUNDS REACH EQUILIBRIUM WHEN THE',
-      'CAPTURE PRICE EXCEEDS WHAT ANY REMAINING PLAYER IS',
-      'WILLING TO PAY, AND THE 24-HOUR WINDOW IS THE',
-      'MECHANISM CONFIRMING THAT.',
+      'HUSTLE CULTURE SELLS MERITOCRACY BUT REWARDS CAPITAL.',
+      'ROUNDS REACH EQUILIBRIUM WHEN THE CAPTURE PRICE',
+      'EXCEEDS WHAT ANY REMAINING PLAYER IS WILLING TO PAY,',
+      'AND THE 24-HOUR WINDOW IS THE MECHANISM CONFIRMING',
+      'THAT.',
       '',
-      'FEES (TAKEN AT CAPTURE):',
-      '  PROTOCOL: 5%',
-      '  REFERRAL (IF PRESENT): 5%',
-      '  TO POT: 90-95%',
+      '~FEES (TAKEN AT CAPTURE):',
+      '~  PROTOCOL: 5%',
+      '~  REFERRAL (IF PRESENT): 5%',
+      '~  TO POT: 90-95%',
       '',
       '══════════════════════════════════════════',
     ],
@@ -104,7 +103,7 @@ export default function GameModal({ modalId, onClose, walletAddress, referralEar
   const content = MODAL_CONTENT[modalId];
 
   const referralUrl = walletAddress
-    ? `capturethebag.wtf/${walletAddress}`
+    ? `https://capturethebag.wtf/${walletAddress}`
     : null;
 
   const handleCopyReferral = (e) => {
@@ -213,12 +212,14 @@ export default function GameModal({ modalId, onClose, walletAddress, referralEar
               </div>
             );
           }
+          const isBlue = line.startsWith('~');
+          const text = isBlue ? line.slice(1) : line;
           return (
             <div
               key={i}
-              className={`modal-line ${i === 0 ? 'modal-heading' : ''}`}
+              className={`modal-line ${i === 0 ? 'modal-heading' : ''} ${isBlue ? 'modal-line-blue' : ''}`}
             >
-              {line || '\u00A0'}
+              {text || '\u00A0'}
             </div>
           );
         })}
