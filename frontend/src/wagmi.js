@@ -8,9 +8,9 @@ const rpcMainnet = import.meta.env.VITE_RPC_HTTP_MAINNET || 'https://mainnet.bas
 export const config = getDefaultConfig({
   appName: 'Capture the Bag',
   projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'PLACEHOLDER',
-  chains: [baseSepolia, base],
+  chains: [base, baseSepolia],
   transports: {
-    [baseSepolia.id]: http(rpcSepolia),
     [base.id]: http(rpcMainnet),
+    [baseSepolia.id]: http(rpcSepolia),
   },
 });

@@ -1,6 +1,5 @@
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { baseSepolia } from 'wagmi/chains';
-import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI } from '../contract';
+import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI, CHAIN_ID } from '../contract';
 
 export function useClaimWinnings() {
   const {
@@ -24,7 +23,7 @@ export function useClaimWinnings() {
       address: CONTRACT_ADDRESS,
       abi: CAPTURE_THE_BAG_ABI,
       functionName: 'claimWinnings',
-      chainId: baseSepolia.id,
+      chainId: CHAIN_ID,
     });
   }
 

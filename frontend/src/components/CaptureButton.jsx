@@ -79,6 +79,11 @@ export default function CaptureButton({
                 ? 'CONFIRMING...'
                 : 'CLAIM WINNINGS'}
           </button>
+          {isCaptureError && (
+            <div className="capture-error">
+              {captureError?.shortMessage || captureError?.message || 'TX FAILED'}
+            </div>
+          )}
         </div>
       );
     }
@@ -101,6 +106,11 @@ export default function CaptureButton({
               ? 'CONFIRMING...'
               : `START NEW ROUND [${newRoundPriceStr} ETH]`}
         </button>
+        {isCaptureError && (
+          <div className="capture-error">
+            {captureError?.shortMessage || captureError?.message || 'TX FAILED'}
+          </div>
+        )}
       </div>
     );
   }

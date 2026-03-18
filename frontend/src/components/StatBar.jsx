@@ -17,12 +17,18 @@ export default function StatBar({ gameState }) {
   } = gameState;
 
   const isHolder = address && holder && address.toLowerCase() === holder.toLowerCase();
+  const isZeroHolder = !holder || holder === '0x0000000000000000000000000000000000000000';
+
+  // Show next round number when waiting for a new round to start
+  const displayRound = roundNumber != null
+    ? (roundNumber === 0n ? '1' : (isZeroHolder ? (roundNumber + 1n).toString() : roundNumber.toString()))
+    : '---';
 
   return (
     <div className="stat-bar">
       <div className="stat">
         <div className="stat-label">ROUND</div>
-        <div className="stat-value">{roundNumber != null ? roundNumber.toString() : '---'}</div>
+        <div className="stat-value">{displayRound}</div>
       </div>
       <div className="stat">
         <div className="stat-label">CAPTURE PRICE</div>

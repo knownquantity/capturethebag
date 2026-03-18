@@ -603,17 +603,17 @@ capture-the-bag/
 
 ## Mainnet Launch Checklist
 
-- [ ] Update production contract — port auto-resolve logic into CaptureTheBag.sol (`capture()` auto-resolves expired rounds, pays winner, starts new round in one tx). Redeploy to Base Sepolia with production parameters (24hr window, 0.01 ETH start).
-- [ ] Update frontend to point to new production contract — new contract address, new deploy block in hooks.
-- [ ] Deploy frontend to Vercel — verify all API endpoints (`/api/state`, `/api/captures`, `/api/abi`, `/api/manifest`) work with the new contract.
-- [ ] Connect custom domain — `capturethebag.wtf`
-- [ ] Test referral mechanism — capture through a referral link, confirm 5% paid to referrer in same tx, confirm referral is permanent, confirm self-referral blocked.
+- [x] Update production contract — port auto-resolve logic into CaptureTheBag.sol (`capture()` auto-resolves expired rounds, pays winner, starts new round in one tx). Redeploy to Base Sepolia with production parameters (24hr window, 0.01 ETH start).
+- [x] Update frontend to point to new production contract — new contract address, new deploy block in hooks.
+- [x] Deploy frontend to Vercel — verify all API endpoints (`/api/state`, `/api/captures`, `/api/abi`, `/api/manifest`) work with the new contract.
+- [x] Connect custom domain — `capturethebag.wtf`
+- [x] Test referral mechanism — capture through a referral link, confirm 5% paid to referrer in same tx, confirm referral is permanent, confirm self-referral blocked.
 - [x] Test round transitions — full round lifecycle: captures → timer expires → manual claim OR auto-resolve on next capture → new round starts with rollover. Test both paths.
 - [x] Test winning screen UI/UX — winner sees "YOU WON X ETH" in timer, losers see truncated address. Claim button for winner, "START NEW ROUND" for everyone else. Win/lose sounds fire correctly.
-- [ ] Wallet edge cases — switching wallets mid-round, disconnecting, reconnecting, capturing with insufficient funds.
-- [ ] Mobile testing — touch targets, no horizontal scroll, readable at small sizes.
-- [ ] Test agent infrastructure — fetch `llms.txt`, `skills.md`, `/api/state`, `/api/abi`. Verify data matches deployed contract.
-- [ ] Audit the smart contract — review for reentrancy, fee math, edge cases around auto-resolve + manual claim interaction, ETH transfer failures.
-- [ ] Configure meta tags and social sharing image — Open Graph and Twitter Card tags, custom OG image for link previews.
-- [ ] Deploy to Base mainnet — seed initial pot, verify on BaseScan.
-- [ ] Gas estimation on Base mainnet — confirm capture and claim tx costs are reasonable.
+- [x] Wallet edge cases — switching wallets mid-round, disconnecting, reconnecting, capturing with insufficient funds.
+- [x] Mobile testing — touch targets, no horizontal scroll, readable at small sizes.
+- [x] Test agent infrastructure — fetch `llms.txt`, `skills.md`, `/api/state`, `/api/abi`. Verify data matches deployed contract.
+- [x] Audit the smart contract — review for reentrancy, fee math, edge cases around auto-resolve + manual claim interaction, ETH transfer failures.
+- [x] Configure meta tags and social sharing image — Open Graph and Twitter Card tags, custom OG image for link previews.
+- [x] Deploy to Base mainnet — seed initial pot, verify on BaseScan.
+- [x] Gas estimation on Base mainnet — confirm capture and claim tx costs are reasonable.

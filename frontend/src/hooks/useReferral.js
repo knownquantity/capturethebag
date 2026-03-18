@@ -1,14 +1,13 @@
 import { useReadContract, useAccount, usePublicClient } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
-import { baseSepolia } from 'wagmi/chains';
-import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI } from '../contract';
+import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI, CHAIN_ID } from '../contract';
 
-const DEPLOY_BLOCK = 39001285n;
+const DEPLOY_BLOCK = CHAIN_ID === 8453 ? 43493485n : 39001285n;
 const BATCH_SIZE = 10000n;
 
 export function useReferral() {
   const { address } = useAccount();
-  const publicClient = usePublicClient({ chainId: baseSepolia.id });
+  const publicClient = usePublicClient({ chainId: CHAIN_ID });
 
   // Read who referred the connected wallet
   const { data: referrer } = useReadContract({
@@ -16,7 +15,7 @@ export function useReferral() {
     abi: CAPTURE_THE_BAG_ABI,
     functionName: 'referredBy',
     args: [address],
-    chainId: baseSepolia.id,
+    chainId: CHAIN_ID,
     query: {
       enabled: !!address,
     },
@@ -24,7 +23,7 @@ export function useReferral() {
 
   // Calculate total referral earnings from BagCaptured events (batched)
   const { data: earnings, isLoading: isEarningsLoading } = useQuery({
-    queryKey: ['referralEarnings', address, baseSepolia.id],
+    queryKey: ['referralEarnings', address, CHAIN_ID],
     queryFn: async () => {
       if (!address || !publicClient) return 0n;
 

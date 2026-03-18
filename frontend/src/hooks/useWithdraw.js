@@ -1,6 +1,5 @@
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { baseSepolia } from 'wagmi/chains';
-import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI } from '../contract';
+import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI, CHAIN_ID } from '../contract';
 
 export function useWithdraw(address) {
   const { data: pendingAmount, refetch } = useReadContract({
@@ -8,7 +7,7 @@ export function useWithdraw(address) {
     abi: CAPTURE_THE_BAG_ABI,
     functionName: 'pendingWithdrawals',
     args: [address],
-    chainId: baseSepolia.id,
+    chainId: CHAIN_ID,
     query: { enabled: !!address, refetchInterval: 10000 },
   });
 
@@ -28,7 +27,7 @@ export function useWithdraw(address) {
       address: CONTRACT_ADDRESS,
       abi: CAPTURE_THE_BAG_ABI,
       functionName: 'withdraw',
-      chainId: baseSepolia.id,
+      chainId: CHAIN_ID,
     });
   }
 

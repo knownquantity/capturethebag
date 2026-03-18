@@ -1,4 +1,4 @@
-# Capture the Bag — Smart Contracts
+## Capture the Bag — Smart Contracts
 
 Onchain game on Base. Pay ETH to capture the bag. Hold it for 24 hours uncontested to win the pot.
 

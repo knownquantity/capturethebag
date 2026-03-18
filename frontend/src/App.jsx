@@ -114,6 +114,7 @@ function App() {
               holder={gameState.holder}
               pot={gameState.pot}
               roundNumber={gameState.roundNumber}
+              inactivityWindow={gameState.inactivityWindow}
               address={address}
             />
 

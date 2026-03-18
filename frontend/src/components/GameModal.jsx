@@ -51,15 +51,15 @@ const MODAL_CONTENT = {
       '',
       'ALL GAME LOGIC RUNS ONCHAIN.',
       'ALL TRANSACTIONS ARE PUBLICLY VERIFIABLE ON BASE.',
-      'CONTRACT IS IMMUTABLE ONCE DEPLOYED.',
+      '__CONTRACT_IMMUTABLE__',
       'BAG IS DISTRIBUTED AUTOMATICALLY WHEN ROUND ENDS.',
       '',
       '══════════════════════════════════════════',
       '',
-      'CONTRACT ADDRESS: PLACEHOLDER ADDRESS',
+      'CONTRACT ADDRESS: 0xCc4D523206b0d4C11fc96dcb7173a3A7fcC38428',
       '',
-      'NETWORK: BASE SEPOLIA',
-      'CHAIN ID: 84532',
+      'NETWORK: BASE MAINNET',
+      'CHAIN ID: 8453',
       '',
       '══════════════════════════════════════════',
     ],
@@ -177,6 +177,22 @@ export default function GameModal({ modalId, onClose, walletAddress, referralEar
             return (
               <div key={i} className="modal-line">
                 YOUR REFERRAL EARNINGS: {formatEth(referralEarnings, 6)} ETH
+              </div>
+            );
+          }
+          if (line === '__CONTRACT_IMMUTABLE__') {
+            return (
+              <div key={i} className="modal-line">
+                <a
+                  href="https://basescan.org/address/0xCc4D523206b0d4C11fc96dcb7173a3A7fcC38428"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="modal-contract-link"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  CONTRACT
+                </a>
+                {' IS IMMUTABLE ONCE DEPLOYED.'}
               </div>
             );
           }

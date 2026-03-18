@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { formatEth } from '../utils/format';
 
-export default function Timer({ windowExpiresAt, canClaim, lastCaptureTime, holder, pot, roundNumber, address }) {
+export default function Timer({ windowExpiresAt, canClaim, lastCaptureTime, holder, pot, roundNumber, inactivityWindow, address }) {
   const [now, setNow] = useState(Math.floor(Date.now() / 1000));
 
   useEffect(() => {
@@ -11,11 +11,17 @@ export default function Timer({ windowExpiresAt, canClaim, lastCaptureTime, hold
     return () => clearInterval(interval);
   }, []);
 
-  // No active round
-  if (!lastCaptureTime || lastCaptureTime === 0n) {
+  // No active round or round ended waiting for next — show full inactivity window
+  const isZeroHolder = !holder || holder === '0x0000000000000000000000000000000000000000';
+  if (isZeroHolder && !canClaim) {
+    const total = inactivityWindow ? Number(inactivityWindow) : 0;
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    const pad = (n) => String(n).padStart(2, '0');
     return (
       <div className="timer">
-        <div className="timer-value timer-expired">00:00:00</div>
+        <div className="timer-value">{`${pad(h)}:${pad(m)}:${pad(s)}`}</div>
       </div>
     );
   }

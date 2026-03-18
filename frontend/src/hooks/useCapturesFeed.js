@@ -1,16 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { usePublicClient } from 'wagmi';
-import { baseSepolia } from 'wagmi/chains';
-import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI } from '../contract';
+import { CONTRACT_ADDRESS, CAPTURE_THE_BAG_ABI, CHAIN_ID } from '../contract';
 
-const DEPLOY_BLOCK = 39001285n;
+const DEPLOY_BLOCK = CHAIN_ID === 8453 ? 43493485n : 39001285n;
 const BATCH_SIZE = 10000n;
 
 export function useCapturesFeed(currentRound) {
-  const publicClient = usePublicClient({ chainId: baseSepolia.id });
+  const publicClient = usePublicClient({ chainId: CHAIN_ID });
 
   const { data: captures, isLoading } = useQuery({
-    queryKey: ['capturesFeed', baseSepolia.id, currentRound?.toString()],
+    queryKey: ['capturesFeed', CHAIN_ID, currentRound?.toString()],
     queryFn: async () => {
       if (!publicClient) return [];
 

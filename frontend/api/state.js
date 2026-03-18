@@ -1,7 +1,7 @@
 import { createPublicClient, http } from 'viem';
-import { baseSepolia } from 'viem/chains';
+import { base } from 'viem/chains';
 
-const CONTRACT_ADDRESS = '0xd1D37Ed6E6bc66C2ceBcB0a037D7aE08423B463E';
+const CONTRACT_ADDRESS = '0xCc4D523206b0d4C11fc96dcb7173a3A7fcC38428';
 
 const ABI = [
   {
@@ -30,8 +30,8 @@ const ABI = [
 ];
 
 const client = createPublicClient({
-  chain: baseSepolia,
-  transport: http(process.env.RPC_HTTP_SEPOLIA || 'https://sepolia.base.org'),
+  chain: base,
+  transport: http(process.env.RPC_HTTP_MAINNET || 'https://mainnet.base.org'),
 });
 
 export default async function handler(req, res) {

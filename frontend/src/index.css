@@ -604,6 +604,15 @@ html, body {
   background: var(--orange);
 }
 
+.modal-contract-link {
+  color: #3898FF;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.modal-contract-link:hover {
+  color: #5aadff;
+}
+
 .pixel-blink {
   animation: pixel-blink 1s steps(1) infinite;
 }
